@@ -22,10 +22,7 @@ public class BaseDatos {
         return conexion;
     }
 
-    // --- NUEVO: crear tablas ---
     public void crearTablas() throws SQLException {
-        Statement stmt = conexion.createStatement();
-
         String tablaUsuarios = "CREATE TABLE IF NOT EXISTS usuario (" +
                 "idUsuario INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "nombre TEXT NOT NULL," +
@@ -50,11 +47,12 @@ public class BaseDatos {
                 "FOREIGN KEY(idLibro) REFERENCES libro(idLibro)" +
                 ");";
 
-        stmt.execute(tablaUsuarios);
-        stmt.execute(tablaLibros);
-        stmt.execute(tablaPrestamos);
+        try (Statement stmt = conexion.createStatement()) {
+            stmt.execute(tablaUsuarios);
+            stmt.execute(tablaLibros);
+            stmt.execute(tablaPrestamos);
+        }
 
-        stmt.close();
         System.out.println("Tablas creadas correctamente");
     }
 }

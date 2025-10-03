@@ -1,4 +1,4 @@
 module BibliotecaVirtual {
-    exports ui;
-    requires java.sql;
+    requires java.desktop;
+    exports Biblioteca;
 }

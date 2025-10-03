@@ -23,13 +23,13 @@ public class PrestamoService {
 
     public void agregarPrestamo(Prestamo p) throws SQLException {
         String sql = "INSERT INTO prestamo(idUsuario, idLibro, fechaPrestamo, fechaDevolucion) VALUES(?,?,?,?)";
-        PreparedStatement ps = db.getConexion().prepareStatement(sql);
-        ps.setInt(1, p.getUsuario().getIdUsuario());
-        ps.setInt(2, p.getLibro().getIdLibro());
-        ps.setString(3, p.getFechaPrestamo().toString());
-        ps.setString(4, p.getFechaDevolucion() != null ? p.getFechaDevolucion().toString() : null);
-        ps.executeUpdate();
-        ps.close();
+        try (PreparedStatement ps = db.getConexion().prepareStatement(sql)) {
+            ps.setInt(1, p.getUsuario().getIdUsuario());
+            ps.setInt(2, p.getLibro().getIdLibro());
+            ps.setString(3, p.getFechaPrestamo().toString());
+            ps.setString(4, p.getFechaDevolucion() != null ? p.getFechaDevolucion().toString() : null);
+            ps.executeUpdate();
+        }
 
         // actualizar disponibilidad del libro
         p.getLibro().setDisponible(false);
@@ -38,25 +38,24 @@ public class PrestamoService {
 
     public List<Prestamo> listarPrestamos() throws SQLException {
         List<Prestamo> lista = new ArrayList<>();
-        Statement stmt = db.getConexion().createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM prestamo");
-
-        while (rs.next()) {
-            Usuario u = usuarioService.buscarUsuario(rs.getInt("idUsuario"));
-            Libro l = libroService.buscarLibro(rs.getInt("idLibro"));
-            Prestamo p = new Prestamo(
-                rs.getInt("idPrestamo"),
-                u,
-                l
-            );
-            // si fechaDevolucion no es null
-            if (rs.getString("fechaDevolucion") != null) {
-                p.devolver();  // marcar como devuelto
+        String sql = "SELECT * FROM prestamo";
+        try (Statement stmt = db.getConexion().createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Usuario u = usuarioService.buscarUsuario(rs.getInt("idUsuario"));
+                Libro l = libroService.buscarLibro(rs.getInt("idLibro"));
+                Prestamo p = new Prestamo(
+                        rs.getInt("idPrestamo"),
+                        u,
+                        l
+                );
+                String fechaDev = rs.getString("fechaDevolucion");
+                if (fechaDev != null) {
+                    p.setFechaDevolucion(LocalDate.parse(fechaDev));
+                }
+                lista.add(p);
             }
-            lista.add(p);
         }
-        rs.close();
-        stmt.close();
         return lista;
     }
 }
