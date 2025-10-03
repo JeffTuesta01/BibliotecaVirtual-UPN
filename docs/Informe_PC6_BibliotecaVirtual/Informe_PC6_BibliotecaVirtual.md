@@ -1,5 +1,3 @@
-﻿![](Aspose.Words.3003ee3d-284d-4b99-a49d-70aeef324df5.001.png)
-
 ![Universidad Privada del Norte](Aspose.Words.3003ee3d-284d-4b99-a49d-70aeef324df5.002.png)
 
 **FACULTAD DE INGENIERIA**
