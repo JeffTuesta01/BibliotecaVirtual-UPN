@@ -1,0 +1,17 @@
+# Archivos de compilación de Java
+/bin/
+/out/
+/target/
+
+# Configuración de Eclipse
+/.classpath
+/.project
+/.settings/
+
+# Archivos de logs y temporales
+*.log
+*.tmp
+
+# Archivos del sistema (Windows)
+Thumbs.db
+.DS_Store
