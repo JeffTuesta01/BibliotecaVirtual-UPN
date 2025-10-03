@@ -1,0 +1,66 @@
+@startuml
+left to right direction
+
+class Usuario {
+    - nombre: String
+    - email: String
+    - password: String
+    + registrarse()
+    + iniciarSesion(email: String, password: String): boolean
+    + buscarLibro(titulo: String)
+    + getNombre(): String
+    + getEmail(): String
+    + getPassword(): String
+}
+
+class Administrador {
+    + gestionarCatalogo(libro: Libro, accion: String)
+}
+
+class Libro {
+    - titulo: String
+    - autor: String
+    - categoria: String
+    - copias: int
+    + getTitulo(): String
+    + getAutor(): String
+    + getCategoria(): String
+    + getCopias(): int
+    + setCopias(copias: int)
+}
+
+class Prestamo {
+    - usuario: Usuario
+    - libro: Libro
+    - activo: boolean
+    + solicitarPrestamo()
+    + devolverLibro()
+    + getUsuario(): Usuario
+    + getLibro(): Libro
+}
+
+class Reserva {
+    - usuario: Usuario
+    - libro: Libro
+    - activa: boolean
+    + reservar()
+    + cancelarReserva()
+    + getUsuario(): Usuario
+    + getLibro(): Libro
+    + isActiva(): boolean
+}
+
+class Historial {
+    - prestamos: ArrayList<Prestamo>
+    + agregarPrestamo(prestamo: Prestamo)
+    + mostrarHistorial()
+}
+
+Usuario <|-- Administrador
+Usuario "1" --> "*" Prestamo
+Usuario "1" --> "*" Reserva
+Prestamo "1" --> "1" Libro
+Reserva "1" --> "1" Libro
+Historial "1" --> "*" Prestamo
+
+@enduml

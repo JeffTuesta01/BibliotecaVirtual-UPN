@@ -1,0 +1,34 @@
+@startuml
+left to right direction
+
+actor "Estudiante" as Est
+actor "Docente" as Doc
+actor "Administrador" as Admin
+
+rectangle "Biblioteca Virtual" {
+  usecase "Registrarse" as UC1
+  usecase "Iniciar Sesión" as UC2
+  usecase "Buscar libros" as UC3
+  usecase "Solicitar préstamo\nde libro digital" as UC4
+  usecase "Devolver libro digital" as UC5
+  usecase "Acceder a materiales\n(PDF, audio, video)" as UC6
+  usecase "Gestionar catálogo\n(agregar, editar, eliminar)" as UC7
+}
+
+Est --> UC1
+Doc --> UC1
+Est --> UC2
+Doc --> UC2
+Est --> UC3
+Doc --> UC3
+Est --> UC4
+Doc --> UC4
+Est --> UC5
+Doc --> UC5
+Est --> UC6
+Doc --> UC6
+
+Admin --> UC7
+Admin --> UC3
+
+@enduml
